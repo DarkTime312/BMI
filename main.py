@@ -13,7 +13,10 @@ class App(ctk.CTk):
         self.resizable(False, False)
         self.configure(padx=10)
 
-        # window layout
+        self.layout()  # window layout
+        self.create_widgets()  # creating widgets
+
+    def layout(self):
         self.rowconfigure(0, weight=12, uniform='a')
         self.rowconfigure(1, weight=33, uniform='a')
         self.rowconfigure(2, weight=10, uniform='a')
@@ -22,7 +25,7 @@ class App(ctk.CTk):
 
         self.columnconfigure(0, weight=1)
 
-        # creating widgets
+    def create_widgets(self):
         self.unit_switch = UnitSwitch(self)
         self.result_label = ResultLabel(self, self.unit_switch)
         self.weight_frame = WeightFrame(self, self.unit_switch, self.result_label)
@@ -136,7 +139,7 @@ class WeightFrame(ctk.CTkFrame):
                                                   text_color=BLACK,
                                                   fg_color=LIGHT_GRAY,
                                                   hover_color=GRAY,
-                                                  command=self.big_dec
+                                                  command=lambda: self.big_adjustment(increment=False),
 
                                                   )
         self.small_decrement_button = ctk.CTkButton(self,
@@ -148,7 +151,7 @@ class WeightFrame(ctk.CTkFrame):
                                                     text_color=BLACK,
                                                     fg_color=LIGHT_GRAY,
                                                     hover_color=GRAY,
-                                                    command=self.small_dec
+                                                    command=lambda: self.small_adjustment(increment=False)
                                                     )
 
         # Increment buttons
@@ -161,7 +164,7 @@ class WeightFrame(ctk.CTkFrame):
                                                   text_color=BLACK,
                                                   fg_color=LIGHT_GRAY,
                                                   hover_color=GRAY,
-                                                  command=self.big_inc,
+                                                  command=lambda: self.big_adjustment(increment=True),
                                                   )
         self.small_increment_button = ctk.CTkButton(self,
                                                     text='+',
@@ -172,7 +175,7 @@ class WeightFrame(ctk.CTkFrame):
                                                     text_color=BLACK,
                                                     fg_color=LIGHT_GRAY,
                                                     hover_color=GRAY,
-                                                    command=self.small_inc,
+                                                    command=lambda: self.small_adjustment(increment=True),
                                                     )
         # The weight label
         self.weight_label = ctk.CTkLabel(self,
@@ -188,42 +191,32 @@ class WeightFrame(ctk.CTkFrame):
         self.big_increment_button.grid(row=0, column=4, padx=5, pady=5)
         self.small_increment_button.grid(row=0, column=3, padx=5, pady=5)
 
-    def big_dec(self):
+    def big_adjustment(self, increment=True):
+        adjustment = 1 if increment else -1
         if self.switch_object.cget('text') == 'metric':
-            self.weight_in_kg_var.set(round(self.weight_in_kg_var.get(), 1) - 1)
+            self.weight_in_kg_var.set(round(self.weight_in_kg_var.get(), 1) + adjustment)
         else:
             if self.pound.get() > 0:
-                self.pound.set(value=(self.pound.get() - 1))
+                self.pound.set(value=(self.pound.get() + adjustment))
         self.update_weight()
 
-    def small_dec(self):
+    def small_adjustment(self, increment=True):
+        adjustment = 0.1 if increment else -0.1
         if self.switch_object.cget('text') == 'metric':
-            self.weight_in_kg_var.set(round(self.weight_in_kg_var.get(), 1) - 0.1)
-        else:
-            if self.oz.get() == 0:
-                self.oz.set(value=15)
-                self.pound.set(value=(self.pound.get() - 1))
+            self.weight_in_kg_var.set(round(self.weight_in_kg_var.get(), 1) + adjustment)
+        else:  # imperial
+            if increment:
+                if self.oz.get() == 15:  # in case we're at maximum ounce
+                    self.oz.set(value=0)  # reset ounce to 0
+                    self.pound.set(value=(self.pound.get() + 1))  # add one to pound
+                else:  # otherwise add 1 to ounce
+                    self.oz.set(value=(self.oz.get() + 1))
             else:
-                self.oz.set(self.oz.get() - 1)
-
-        self.update_weight()
-
-    def big_inc(self):
-        if self.switch_object.cget('text') == 'metric':
-            self.weight_in_kg_var.set(round(self.weight_in_kg_var.get(), 1) + 1)
-        else:
-            self.pound.set(value=(self.pound.get() + 1))
-        self.update_weight()
-
-    def small_inc(self):
-        if self.switch_object.cget('text') == 'metric':
-            self.weight_in_kg_var.set(round(self.weight_in_kg_var.get(), 1) + 0.1)
-        else:
-            if self.oz.get() == 15:
-                self.oz.set(value=0)
-                self.pound.set(value=(self.pound.get() + 1))
-            else:
-                self.oz.set(value=(self.oz.get() + 1))
+                if self.oz.get() == 0:  # in case we're at minimum ounce
+                    self.oz.set(value=15)  # start from top
+                    self.pound.set(value=(self.pound.get() - 1))  # subtract one from pound
+                else:  # otherwise subtract one from ounce
+                    self.oz.set(self.oz.get() - 1)
 
         self.update_weight()
 
