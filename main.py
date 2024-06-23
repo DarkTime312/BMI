@@ -74,7 +74,7 @@ class ResultLabel(ctk.CTkLabel):
 
     def calculate_bmi(self):
         if self.switch_object.cget('text') == 'metric':
-            weight = self.parent.weight_frame.weight_var.get()
+            weight = self.parent.weight_frame.weight_in_kg_var.get()
             height = self.parent.height_frame.slider_var.get() / 100
             return round(weight / (height ** 2), 2)
 
@@ -93,12 +93,10 @@ class WeightFrame(ctk.CTkFrame):
         super().__init__(master=parent,
                          fg_color=WHITE
                          )
+        # Reference to other classes
         self.switch_object = switch_object
         self.result_label = result_label
-        self.pound = ctk.IntVar(value=143)
-        self.pound.trace('w', self.result_label.update_result)
-        self.oz = ctk.IntVar(value=4)
-        self.oz.trace('w', self.result_label.update_result)
+
         self.grid(row=3, column=0, sticky='news', pady=10)
 
         # setting the layout
@@ -110,8 +108,22 @@ class WeightFrame(ctk.CTkFrame):
         self.columnconfigure(3, weight=10, uniform='d')
         self.columnconfigure(4, weight=25, uniform='d')
 
-        # create widgets
-        self.create_widgets()
+        self.create_vars()  # create variables
+        self.create_widgets()  # create widgets
+        self.widgets_layout()
+
+    def create_vars(self):
+        """Creates variables to store weight
+            in metric and imperial unit.
+        """
+        self.weight_in_kg_var = ctk.DoubleVar(value=65.1)
+        self.weight_in_kg_var.trace('w', self.result_label.update_result)
+
+        self.pound = ctk.IntVar(value=143)
+        self.pound.trace('w', self.result_label.update_result)
+
+        self.oz = ctk.IntVar(value=4)
+        self.oz.trace('w', self.result_label.update_result)
 
     def create_widgets(self):
         # Decrement buttons
@@ -138,8 +150,6 @@ class WeightFrame(ctk.CTkFrame):
                                                     hover_color=GRAY,
                                                     command=self.small_dec
                                                     )
-        self.big_decrement_button.grid(row=0, column=0, padx=5, pady=5)
-        self.small_decrement_button.grid(row=0, column=1, padx=5, pady=5)
 
         # Increment buttons
         self.big_increment_button = ctk.CTkButton(self,
@@ -164,21 +174,23 @@ class WeightFrame(ctk.CTkFrame):
                                                     hover_color=GRAY,
                                                     command=self.small_inc,
                                                     )
-        self.big_increment_button.grid(row=0, column=4, padx=5, pady=5)
-        self.small_increment_button.grid(row=0, column=3, padx=5, pady=5)
-
         # The weight label
-        self.weight_var = ctk.DoubleVar(value=65.0)
-        self.weight_var.trace('w', self.result_label.update_result)
         self.weight_label = ctk.CTkLabel(self,
                                          text='65.0kg',
                                          font=(FONT, INPUT_FONT_SIZE)
                                          )
+
+    def widgets_layout(self):
+        """Adds the widget to the frame."""
+        self.big_decrement_button.grid(row=0, column=0, padx=5, pady=5)
+        self.small_decrement_button.grid(row=0, column=1, padx=5, pady=5)
         self.weight_label.grid(row=0, column=2)
+        self.big_increment_button.grid(row=0, column=4, padx=5, pady=5)
+        self.small_increment_button.grid(row=0, column=3, padx=5, pady=5)
 
     def big_dec(self):
         if self.switch_object.cget('text') == 'metric':
-            self.weight_var.set(round(self.weight_var.get(), 1) - 1)
+            self.weight_in_kg_var.set(round(self.weight_in_kg_var.get(), 1) - 1)
         else:
             if self.pound.get() > 0:
                 self.pound.set(value=(self.pound.get() - 1))
@@ -186,7 +198,7 @@ class WeightFrame(ctk.CTkFrame):
 
     def small_dec(self):
         if self.switch_object.cget('text') == 'metric':
-            self.weight_var.set(round(self.weight_var.get(), 1) - 0.1)
+            self.weight_in_kg_var.set(round(self.weight_in_kg_var.get(), 1) - 0.1)
         else:
             if self.oz.get() == 0:
                 self.oz.set(value=15)
@@ -198,14 +210,14 @@ class WeightFrame(ctk.CTkFrame):
 
     def big_inc(self):
         if self.switch_object.cget('text') == 'metric':
-            self.weight_var.set(round(self.weight_var.get(), 1) + 1)
+            self.weight_in_kg_var.set(round(self.weight_in_kg_var.get(), 1) + 1)
         else:
             self.pound.set(value=(self.pound.get() + 1))
         self.update_weight()
 
     def small_inc(self):
         if self.switch_object.cget('text') == 'metric':
-            self.weight_var.set(round(self.weight_var.get(), 1) + 0.1)
+            self.weight_in_kg_var.set(round(self.weight_in_kg_var.get(), 1) + 0.1)
         else:
             if self.oz.get() == 15:
                 self.oz.set(value=0)
@@ -217,21 +229,24 @@ class WeightFrame(ctk.CTkFrame):
 
     def update_weight(self):
         if self.switch_object.cget('text') == 'metric':
-            self.weight_label.configure(text=f'{round(self.weight_var.get(), 1)}kg')
+            self.weight_label.configure(text=f'{round(self.weight_in_kg_var.get(), 1)}kg')
         else:
             self.weight_label.configure(text=f'{self.pound.get()}lb {self.oz.get()}oz')
 
     def convert_weight_unit(self, to='imperial'):
-        if to == 'imperial':
-            weight_in_kg = round(self.weight_var.get(), 1)
-            weight_in_pound = weight_in_kg * 2.205
+        if to == 'imperial':  # Converting metric to imperial
+            weight_in_kg = self.weight_in_kg_var.get()
+            weight_in_decimal_pound = weight_in_kg * 2.205
 
-            self.pound.set(value=int(weight_in_pound // 1))
-            self.oz.set(value=int((weight_in_pound % 1) * 16))
+            # convert the decimal pound to pound + ounce format
+            integer_part, decimal_part = divmod(weight_in_decimal_pound, 1)
+            self.pound.set(value=int(integer_part))
+            self.oz.set(value=int(decimal_part * 16))  # converted pound to ounce
         else:
-            total_oz = self.oz.get() + (self.pound.get() * 16)
-            total_kg = round(total_oz / 35.27, 1)
-            self.weight_var.set(total_kg)
+            # Converting imperial to metric
+            total_weight_in_ounce = self.oz.get() + (self.pound.get() * 16)
+            total_weight_in_kg = round(total_weight_in_ounce / 35.27, 1)
+            self.weight_in_kg_var.set(total_weight_in_kg)
 
 
 class HeightFrame(ctk.CTkFrame):
