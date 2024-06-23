@@ -24,9 +24,9 @@ class App(ctk.CTk):
 
         # creating widgets
         self.unit_switch = UnitSwitch(self)
-        self.result_label = ResultLabel(self)
-        self.weight_frame = WeightFrame(self, self.unit_switch)
-        self.height_frame = HeightFrame(self, self.unit_switch)
+        self.result_label = ResultLabel(self, self.unit_switch)
+        self.weight_frame = WeightFrame(self, self.unit_switch, self.result_label)
+        self.height_frame = HeightFrame(self, self.unit_switch, self.result_label)
 
 
 class UnitSwitch(ctk.CTkLabel):
@@ -61,24 +61,44 @@ class UnitSwitch(ctk.CTkLabel):
 
 
 class ResultLabel(ctk.CTkLabel):
-    def __init__(self, parent):
+    def __init__(self, parent, switch_object):
         super().__init__(master=parent,
                          text='22.49',
                          fg_color='transparent',
                          text_color='white',
                          font=(FONT, MAIN_TEXT_SIZE, 'bold')
                          )
+        self.switch_object = switch_object
+        self.parent = parent
         self.grid(row=1, column=0, sticky='news')
+
+    def calculate_bmi(self):
+        if self.switch_object.cget('text') == 'metric':
+            weight = self.parent.weight_frame.weight_var.get()
+            height = self.parent.height_frame.slider_var.get() / 100
+            return round(weight / (height ** 2), 2)
+
+        else:
+            weight = self.parent.weight_frame.pound.get() + (self.parent.weight_frame.oz.get() / 16)
+            height = (self.parent.height_frame.slider_var.get() / 2.54)
+            return round((weight * 703) / (height ** 2), 2)
+
+    def update_result(self, *args):
+        result = self.calculate_bmi()
+        self.configure(text=result)
 
 
 class WeightFrame(ctk.CTkFrame):
-    def __init__(self, parent, switch_object):
+    def __init__(self, parent, switch_object, result_label):
         super().__init__(master=parent,
                          fg_color=WHITE
                          )
         self.switch_object = switch_object
-        self.pound = 143
-        self.oz = 4
+        self.result_label = result_label
+        self.pound = ctk.IntVar(value=143)
+        self.pound.trace('w', self.result_label.update_result)
+        self.oz = ctk.IntVar(value=4)
+        self.oz.trace('w', self.result_label.update_result)
         self.grid(row=3, column=0, sticky='news', pady=10)
 
         # setting the layout
@@ -149,6 +169,7 @@ class WeightFrame(ctk.CTkFrame):
 
         # The weight label
         self.weight_var = ctk.DoubleVar(value=65.0)
+        self.weight_var.trace('w', self.result_label.update_result)
         self.weight_label = ctk.CTkLabel(self,
                                          text='65.0kg',
                                          font=(FONT, INPUT_FONT_SIZE)
@@ -159,19 +180,19 @@ class WeightFrame(ctk.CTkFrame):
         if self.switch_object.cget('text') == 'metric':
             self.weight_var.set(round(self.weight_var.get(), 1) - 1)
         else:
-            if self.pound > 0:
-                self.pound -= 1
+            if self.pound.get() > 0:
+                self.pound.set(value=(self.pound.get() - 1))
         self.update_weight()
 
     def small_dec(self):
         if self.switch_object.cget('text') == 'metric':
             self.weight_var.set(round(self.weight_var.get(), 1) - 0.1)
         else:
-            if self.oz == 0:
-                self.oz = 15
-                self.pound -= 1
+            if self.oz.get() == 0:
+                self.oz.set(value=15)
+                self.pound.set(value=(self.pound.get() - 1))
             else:
-                self.oz -= 1
+                self.oz.set(self.oz.get() - 1)
 
         self.update_weight()
 
@@ -179,48 +200,47 @@ class WeightFrame(ctk.CTkFrame):
         if self.switch_object.cget('text') == 'metric':
             self.weight_var.set(round(self.weight_var.get(), 1) + 1)
         else:
-            self.pound += 1
+            self.pound.set(value=(self.pound.get() + 1))
         self.update_weight()
 
     def small_inc(self):
         if self.switch_object.cget('text') == 'metric':
             self.weight_var.set(round(self.weight_var.get(), 1) + 0.1)
         else:
-            if self.oz == 15:
-                self.oz = 0
-                self.pound += 1
+            if self.oz.get() == 15:
+                self.oz.set(value=0)
+                self.pound.set(value=(self.pound.get() + 1))
             else:
-                self.oz += 1
+                self.oz.set(value=(self.oz.get() + 1))
 
         self.update_weight()
-
 
     def update_weight(self):
         if self.switch_object.cget('text') == 'metric':
             self.weight_label.configure(text=f'{round(self.weight_var.get(), 1)}kg')
         else:
-            self.weight_label.configure(text=f'{self.pound}lb {self.oz}oz')
+            self.weight_label.configure(text=f'{self.pound.get()}lb {self.oz.get()}oz')
 
     def convert_weight_unit(self, to='imperial'):
         if to == 'imperial':
             weight_in_kg = round(self.weight_var.get(), 1)
             weight_in_pound = weight_in_kg * 2.205
-            self.pound = int(weight_in_pound // 1)
-            self.oz = int((weight_in_pound % 1) * 16)
+
+            self.pound.set(value=int(weight_in_pound // 1))
+            self.oz.set(value=int((weight_in_pound % 1) * 16))
         else:
-            total_oz = self.oz + (self.pound * 16)
+            total_oz = self.oz.get() + (self.pound.get() * 16)
             total_kg = round(total_oz / 35.27, 1)
             self.weight_var.set(total_kg)
 
 
-
-
 class HeightFrame(ctk.CTkFrame):
-    def __init__(self, parent, switch_object):
+    def __init__(self, parent, switch_object, result_label):
         super().__init__(master=parent,
                          fg_color=WHITE,
                          )
         self.switch_object = switch_object
+        self.result_label = result_label
         self.grid(row=4, column=0, sticky='news', pady=10)
 
         # set layout
@@ -232,6 +252,8 @@ class HeightFrame(ctk.CTkFrame):
         self.create_widgets()
 
     def create_widgets(self):
+        self.slider_var = ctk.IntVar(value=170)
+        self.slider_var.trace('w', self.result_label.update_result)
         self.height_slider = ctk.CTkSlider(self,
                                            width=240,
                                            progress_color=GREEN,
@@ -240,9 +262,9 @@ class HeightFrame(ctk.CTkFrame):
                                            fg_color=LIGHT_GRAY,
                                            from_=100,
                                            to=250,
+                                           variable=self.slider_var,
                                            command=self.update_height)
         self.height_slider.grid(row=0, column=0)
-        self.height_slider.set(170)
 
         self.height_label = ctk.CTkLabel(self,
                                          text='1.70m',
@@ -253,7 +275,7 @@ class HeightFrame(ctk.CTkFrame):
     def update_height(self, value=None):
         current_unit = self.switch_object.cget('text')
         if value is None:
-            value = self.height_slider.get()
+            value = self.slider_var.get()
         if current_unit == 'metric':
             value = f'{value / 100:.2f}m'
         else:
