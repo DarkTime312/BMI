@@ -131,7 +131,7 @@ class WeightFrame(ctk.CTkFrame):
                                                   text_color=BLACK,
                                                   fg_color=LIGHT_GRAY,
                                                   hover_color=GRAY,
-
+                                                  command=self.big_inc,
                                                   )
         self.small_increment_button = ctk.CTkButton(self,
                                                     text='+',
@@ -142,6 +142,7 @@ class WeightFrame(ctk.CTkFrame):
                                                     text_color=BLACK,
                                                     fg_color=LIGHT_GRAY,
                                                     hover_color=GRAY,
+                                                    command=self.small_inc,
                                                     )
         self.big_increment_button.grid(row=0, column=4, padx=5, pady=5)
         self.small_increment_button.grid(row=0, column=3, padx=5, pady=5)
@@ -171,6 +172,25 @@ class WeightFrame(ctk.CTkFrame):
                 self.pound -= 1
             else:
                 self.oz -= 1
+
+        self.update_weight()
+
+    def big_inc(self):
+        if self.switch_object.cget('text') == 'metric':
+            self.weight_var.set(round(self.weight_var.get(), 1) + 1)
+        else:
+            self.pound += 1
+        self.update_weight()
+
+    def small_inc(self):
+        if self.switch_object.cget('text') == 'metric':
+            self.weight_var.set(round(self.weight_var.get(), 1) + 0.1)
+        else:
+            if self.oz == 15:
+                self.oz = 0
+                self.pound += 1
+            else:
+                self.oz += 1
 
         self.update_weight()
 
