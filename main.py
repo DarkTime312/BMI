@@ -2,7 +2,7 @@ from settings import *
 import customtkinter as ctk
 
 
-class App(ctk.CTk):
+class BmiApp(ctk.CTk):
     def __init__(self):
         super().__init__(fg_color=GREEN)
 
@@ -13,17 +13,18 @@ class App(ctk.CTk):
         self.resizable(False, False)
         self.configure(padx=10)
 
-        self.layout()  # window layout
-        self.create_widgets()  # creating widgets
+        self.grid_layout()  # setting the grid layout
+        self.create_widgets()  # creates the widgets
 
-    def layout(self):
-        self.rowconfigure(0, weight=12, uniform='a')
-        self.rowconfigure(1, weight=33, uniform='a')
-        self.rowconfigure(2, weight=10, uniform='a')
-        self.rowconfigure(3, weight=20, uniform='a')
-        self.rowconfigure(4, weight=20, uniform='a')
+    def grid_layout(self):
+        """Creates a 1 x 5 grid layout."""
+        self.rowconfigure(0, weight=1, uniform='a')  # unit switch
+        self.rowconfigure(1, weight=3, uniform='a')  # result label
+        self.rowconfigure(2, weight=1, uniform='a')  # empty space
+        self.rowconfigure(3, weight=2, uniform='a')  # weight buttons
+        self.rowconfigure(4, weight=2, uniform='a')  # height slider
 
-        self.columnconfigure(0, weight=1)
+        self.columnconfigure(0, weight=1)  # a single column
 
     def create_widgets(self):
         self.unit_switch = UnitSwitch(self)
@@ -33,37 +34,52 @@ class App(ctk.CTk):
 
 
 class UnitSwitch(ctk.CTkLabel):
+    """
+    A label that when clicked acts as a button and switches the unit
+    between `metric` and `Imperial`.
+    """
     def __init__(self, parent, default_unit='metric'):
         super().__init__(master=parent,
                          text=default_unit,
                          text_color=DARK_GREEN,
                          fg_color='transparent',
-                         width=0,
                          font=(FONT, SWITCH_FONT_SIZE, 'bold')
                          )
         self.parent = parent
+
+        self.grid(row=0, column=0, sticky='ne')  # placing the label on the grid
+        # Binding the label to a function to get run when label is clicked.
         self.bind('<Button-1>', self.change_unit)
-        self.grid(row=0, column=0, sticky='ne')
-        self.pound = 0
-        self.oz = 0
 
     def change_unit(self, _):
-        current_text = self.cget('text')
+        """
+        Runs the logic to change units and updates the labels.
+        """
+        current_text = self.cget('text')  # gets the current unit as text
+        # switching the unit
         new_text = 'imperial' if current_text == 'metric' else 'metric'
         self.configure(text=new_text)
+
+        # Runs the unit conversion logic based on new unit
         if new_text == 'imperial':
             self.parent.weight_frame.convert_weight_unit(to='imperial')
-        else:
+        else:  # if switched to metric
             self.parent.weight_frame.convert_weight_unit(to='metric')
+        # runs the logic to update the label
         self.update_labels()
 
     def update_labels(self):
-        # update height label
+        """
+        Updates the related labels to both weight and height.
+        """
         self.parent.height_frame.update_height()
         self.parent.weight_frame.update_weight()
 
 
 class ResultLabel(ctk.CTkLabel):
+    """
+    A label that shows the calculated BMI on screen.
+    """
     def __init__(self, parent, switch_object):
         super().__init__(master=parent,
                          text='22.49',
@@ -71,27 +87,41 @@ class ResultLabel(ctk.CTkLabel):
                          text_color='white',
                          font=(FONT, MAIN_TEXT_SIZE, 'bold')
                          )
+        # Reference to other classes
         self.switch_object = switch_object
         self.parent = parent
+        # Placing the Label on the screen
         self.grid(row=1, column=0, sticky='news')
 
     def calculate_bmi(self):
+        """
+        Calculates the BMI based on the current unit.
+        and returns the result as a float.
+        """
         if self.switch_object.cget('text') == 'metric':
+            # gets the weight as kg
             weight = self.parent.weight_frame.weight_in_kg_var.get()
+            # gets the height in centimeter and convert it to meter
             height = self.parent.height_frame.slider_var.get() / 100
-            return round(weight / (height ** 2), 2)
+            return round(weight / (height ** 2), 2)  # rounded to 2 decimals
 
-        else:
+        else:  # if unit is imperial
+            # gets the cumulated weight as pound
             weight = self.parent.weight_frame.pound.get() + (self.parent.weight_frame.oz.get() / 16)
+            # converts the height from centimeters to inches.
             height = (self.parent.height_frame.slider_var.get() / 2.54)
             return round((weight * 703) / (height ** 2), 2)
 
     def update_result(self, *args):
+        """Gets the BMI and updates the text inside the label."""
         result = self.calculate_bmi()
         self.configure(text=result)
 
 
 class WeightFrame(ctk.CTkFrame):
+    """
+    A frame that contains the buttons to adjust the weight.
+    """
     def __init__(self, parent, switch_object, result_label):
         super().__init__(master=parent,
                          fg_color=WHITE
@@ -111,24 +141,32 @@ class WeightFrame(ctk.CTkFrame):
         self.columnconfigure(3, weight=10, uniform='d')
         self.columnconfigure(4, weight=25, uniform='d')
 
-        self.create_vars()  # create variables
-        self.create_widgets()  # create widgets
-        self.widgets_layout()
+        self.create_vars()  # creates the variables
+        self.create_widgets()  # creates the widgets
+        self.widgets_layout()  # places the widgets on the screen
 
     def create_vars(self):
-        """Creates variables to store weight
-            in metric and imperial unit.
         """
+        Creates variables to store weight
+        in metric and imperial units.
+        """
+        # A variable to store the weight as kg
         self.weight_in_kg_var = ctk.DoubleVar(value=65.1)
-        self.weight_in_kg_var.trace('w', self.result_label.update_result)
-
+        # A variable to store the pound part of imperial unit
         self.pound = ctk.IntVar(value=143)
-        self.pound.trace('w', self.result_label.update_result)
-
+        # A variable to store the ounce part of imperial unit
         self.oz = ctk.IntVar(value=4)
+
+        # Binding a function to each variable that will be run
+        # every time the variable is changed
+        self.weight_in_kg_var.trace('w', self.result_label.update_result)
+        self.pound.trace('w', self.result_label.update_result)
         self.oz.trace('w', self.result_label.update_result)
 
     def create_widgets(self):
+        """
+        Creates all the widgets in the frame.
+        """
         # Decrement buttons
         self.big_decrement_button = ctk.CTkButton(self,
                                                   text='-',
@@ -192,26 +230,39 @@ class WeightFrame(ctk.CTkFrame):
         self.small_increment_button.grid(row=0, column=3, padx=5, pady=5)
 
     def big_adjustment(self, increment=True):
+        """
+        Increment or decrements the weight value in big steps.
+        """
+        # Decides the operation as addition or subtraction based on increment parameter.
         adjustment = 1 if increment else -1
-        if self.switch_object.cget('text') == 'metric':
-            self.weight_in_kg_var.set(round(self.weight_in_kg_var.get(), 1) + adjustment)
-        else:
+        # if the unit is metric and the current weight is above zero
+        if self.switch_object.cget('text') == 'metric' and (weight := self.weight_in_kg_var.get()) > 0:
+            # adds or subtracts 1 kg
+            self.weight_in_kg_var.set(round(weight, 1) + adjustment)
+        else:  # if the unit is imperial
             if self.pound.get() > 0:
+                # adds or subtract 1 pound
                 self.pound.set(value=(self.pound.get() + adjustment))
+        # updates the label
         self.update_weight()
 
     def small_adjustment(self, increment=True):
+        """
+        Increment or decrements the weight value in small steps.
+        """
+        # Decides the operation as addition or subtraction based on increment parameter.
         adjustment = 0.1 if increment else -0.1
-        if self.switch_object.cget('text') == 'metric':
-            self.weight_in_kg_var.set(round(self.weight_in_kg_var.get(), 1) + adjustment)
+        if self.switch_object.cget('text') == 'metric' and (weight := self.weight_in_kg_var.get()) > 0:
+            # adds or subtracts 100 grams
+            self.weight_in_kg_var.set(round(weight, 1) + adjustment)
         else:  # imperial
             if increment:
-                if self.oz.get() == 15:  # in case we're at maximum ounce
+                if self.oz.get() == 15:  # in case we're at maximum amount of ounce
                     self.oz.set(value=0)  # reset ounce to 0
                     self.pound.set(value=(self.pound.get() + 1))  # add one to pound
                 else:  # otherwise add 1 to ounce
                     self.oz.set(value=(self.oz.get() + 1))
-            else:
+            else:  # decrement
                 if self.oz.get() == 0:  # in case we're at minimum ounce
                     self.oz.set(value=15)  # start from top
                     self.pound.set(value=(self.pound.get() - 1))  # subtract one from pound
@@ -221,12 +272,16 @@ class WeightFrame(ctk.CTkFrame):
         self.update_weight()
 
     def update_weight(self):
+        """Updates the text showing the weight."""
         if self.switch_object.cget('text') == 'metric':
             self.weight_label.configure(text=f'{round(self.weight_in_kg_var.get(), 1)}kg')
         else:
             self.weight_label.configure(text=f'{self.pound.get()}lb {self.oz.get()}oz')
 
     def convert_weight_unit(self, to='imperial'):
+        """
+        Converts the weight between units.
+        """
         if to == 'imperial':  # Converting metric to imperial
             weight_in_kg = self.weight_in_kg_var.get()
             weight_in_decimal_pound = weight_in_kg * 2.205
@@ -234,12 +289,12 @@ class WeightFrame(ctk.CTkFrame):
             # convert the decimal pound to pound + ounce format
             integer_part, decimal_part = divmod(weight_in_decimal_pound, 1)
             self.pound.set(value=int(integer_part))
-            self.oz.set(value=int(decimal_part * 16))  # converted pound to ounce
+            self.oz.set(value=int(decimal_part * 16))  # converts decimal pound to ounce
         else:
             # Converting imperial to metric
             total_weight_in_ounce = self.oz.get() + (self.pound.get() * 16)
             total_weight_in_kg = round(total_weight_in_ounce / 35.27, 1)
-            self.weight_in_kg_var.set(total_weight_in_kg)
+            self.weight_in_kg_var.set(total_weight_in_kg)  # update the variable
 
 
 class HeightFrame(ctk.CTkFrame):
@@ -247,29 +302,32 @@ class HeightFrame(ctk.CTkFrame):
         super().__init__(master=parent,
                          fg_color=WHITE,
                          )
+        # Reference to other classes
         self.switch_object = switch_object
         self.result_label = result_label
+
         self.grid(row=4, column=0, sticky='news', pady=10)
 
         # set layout
         self.rowconfigure(0, weight=1)
 
-        self.columnconfigure(0, weight=30, uniform='e')
-        self.columnconfigure(1, weight=10, uniform='e')
+        self.columnconfigure(0, weight=3, uniform='e')
+        self.columnconfigure(1, weight=1, uniform='e')
 
         self.create_widgets()
 
     def create_widgets(self):
         self.slider_var = ctk.IntVar(value=170)
         self.slider_var.trace('w', self.result_label.update_result)
+
         self.height_slider = ctk.CTkSlider(self,
                                            width=240,
                                            progress_color=GREEN,
                                            button_color=GREEN,
                                            button_hover_color=GRAY,
                                            fg_color=LIGHT_GRAY,
-                                           from_=100,
-                                           to=250,
+                                           from_=100,  # 100 cm
+                                           to=250,  # 250 cm
                                            variable=self.slider_var,
                                            command=self.update_height)
         self.height_slider.grid(row=0, column=0)
@@ -281,12 +339,15 @@ class HeightFrame(ctk.CTkFrame):
         self.height_label.grid(row=0, column=1)
 
     def update_height(self, value=None):
+        """
+        Updates the height shown on screen based on the selected amount with slider.
+        """
         current_unit = self.switch_object.cget('text')
         if value is None:
             value = self.slider_var.get()
         if current_unit == 'metric':
             value = f'{value / 100:.2f}m'
-        else:
+        else:  # imperial
             cm_to_feet = value * 0.0328084
             feet, remainder = divmod(cm_to_feet, 1)
             inch = int(remainder * 12)
@@ -294,5 +355,6 @@ class HeightFrame(ctk.CTkFrame):
         self.height_label.configure(text=value)
 
 
-app = App()
+# Running the app
+app = BmiApp()
 app.mainloop()

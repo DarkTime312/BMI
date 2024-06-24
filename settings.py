@@ -12,6 +12,3 @@ WHITE = '#F2F2F2'
 BLACK = '#1F1F1F'
 LIGHT_GRAY = '#E8E8E8'
 GRAY = '#D9D9D9'
-
-# title hex
-TITLE_HEX_COLOR = 0x00ABBF50 # hex order: 0x00bbggrr #50BFAB
