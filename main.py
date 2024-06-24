@@ -3,7 +3,13 @@ import customtkinter as ctk
 
 
 class BmiApp(ctk.CTk):
+    """
+    Main application class for the BMI calculator.
+
+    This class sets up the main window and manages the overall layout and widgets.
+    """
     def __init__(self):
+        """Initialize the BMI calculator application."""
         super().__init__(fg_color=GREEN)
 
         # Window settings
@@ -17,16 +23,13 @@ class BmiApp(ctk.CTk):
         self.create_widgets()  # creates the widgets
 
     def grid_layout(self):
-        """Creates a 1 x 5 grid layout."""
-        self.rowconfigure(0, weight=1, uniform='a')  # unit switch
-        self.rowconfigure(1, weight=3, uniform='a')  # result label
-        self.rowconfigure(2, weight=1, uniform='a')  # empty space
-        self.rowconfigure(3, weight=2, uniform='a')  # weight buttons
-        self.rowconfigure(4, weight=2, uniform='a')  # height slider
-
-        self.columnconfigure(0, weight=1)  # a single column
+        """Set up the grid layout for the main window."""
+        for i, weight in enumerate([1, 3, 1, 2, 2]):
+            self.rowconfigure(i, weight=weight, uniform='a')
+        self.columnconfigure(0, weight=1)
 
     def create_widgets(self):
+        """Create and initialize all widgets for the application."""
         self.unit_switch = UnitSwitch(self)
         self.result_label = ResultLabel(self, self.unit_switch)
         self.weight_frame = WeightFrame(self, self.unit_switch, self.result_label)
@@ -35,10 +38,16 @@ class BmiApp(ctk.CTk):
 
 class UnitSwitch(ctk.CTkLabel):
     """
-    A label that when clicked acts as a button and switches the unit
-    between `metric` and `Imperial`.
+    A label that acts as a button to switch between metric and imperial units.
     """
     def __init__(self, parent, default_unit='metric'):
+        """
+        Initialize the UnitSwitch.
+
+        Args:
+            parent: The parent widget.
+            default_unit (str): The default unit system ('metric' or 'imperial').
+        """
         super().__init__(master=parent,
                          text=default_unit,
                          text_color=DARK_GREEN,
@@ -53,7 +62,7 @@ class UnitSwitch(ctk.CTkLabel):
 
     def change_unit(self, _):
         """
-        Runs the logic to change units and updates the labels.
+        Change the unit system and update related widgets.
         """
         current_text = self.cget('text')  # gets the current unit as text
         # switching the unit
@@ -69,18 +78,23 @@ class UnitSwitch(ctk.CTkLabel):
         self.update_labels()
 
     def update_labels(self):
-        """
-        Updates the related labels to both weight and height.
-        """
+        """Update labels for both height and weight frames."""
         self.parent.height_frame.update_height()
         self.parent.weight_frame.update_weight()
 
 
 class ResultLabel(ctk.CTkLabel):
     """
-    A label that shows the calculated BMI on screen.
+    A label that displays the calculated BMI.
     """
     def __init__(self, parent, switch_object):
+        """
+        Initialize the ResultLabel.
+
+        Args:
+            parent: The parent widget.
+            switch_object: The UnitSwitch object for reference.
+        """
         super().__init__(master=parent,
                          text='22.49',
                          fg_color='transparent',
@@ -95,8 +109,10 @@ class ResultLabel(ctk.CTkLabel):
 
     def calculate_bmi(self):
         """
-        Calculates the BMI based on the current unit.
-        and returns the result as a float.
+        Calculate the BMI based on the current unit system.
+
+        Returns:
+            float: The calculated BMI rounded to two decimal places.
         """
         if self.switch_object.cget('text') == 'metric':
             # gets the weight as kg
