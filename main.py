@@ -12,7 +12,7 @@ class BmiApp(ctk.CTk):
         """Initialize the BMI calculator application."""
         super().__init__(fg_color=GREEN)
 
-        # Window settings
+        # Window setup
         self.title('')
         self.geometry('400x400')
         self.iconbitmap('empty.ico')
@@ -51,14 +51,13 @@ class UnitSwitch(ctk.CTkLabel):
         super().__init__(master=parent,
                          text=default_unit,
                          text_color=DARK_GREEN,
-                         fg_color='transparent',
                          font=(FONT, SWITCH_FONT_SIZE, 'bold')
                          )
         self.parent = parent
 
         self.grid(row=0, column=0, sticky='ne')  # placing the label on the grid
         # Binding the label to a function to get run when label is clicked.
-        self.bind('<Button-1>', self.change_unit)
+        self.bind('<Button>', self.change_unit)
 
     def change_unit(self, _):
         """
@@ -149,13 +148,13 @@ class WeightFrame(ctk.CTkFrame):
         self.grid(row=3, column=0, sticky='news', pady=10)
 
         # setting the layout
-        self.rowconfigure(0, weight=10)
+        self.rowconfigure(0, weight=1)
 
-        self.columnconfigure(0, weight=25, uniform='d')
-        self.columnconfigure(1, weight=10, uniform='d')
-        self.columnconfigure(2, weight=35, uniform='d')
-        self.columnconfigure(3, weight=10, uniform='d')
-        self.columnconfigure(4, weight=25, uniform='d')
+        self.columnconfigure(0, weight=2, uniform='d')
+        self.columnconfigure(1, weight=1, uniform='d')
+        self.columnconfigure(2, weight=3, uniform='d')
+        self.columnconfigure(3, weight=1, uniform='d')
+        self.columnconfigure(4, weight=2, uniform='d')
 
         self.create_vars()  # creates the variables
         self.create_widgets()  # creates the widgets
@@ -364,10 +363,8 @@ class HeightFrame(ctk.CTkFrame):
         if current_unit == 'metric':
             value = f'{value / 100:.2f}m'
         else:  # imperial
-            cm_to_feet = value * 0.0328084
-            feet, remainder = divmod(cm_to_feet, 1)
-            inch = int(remainder * 12)
-            value = f"{int(feet)}'{inch}''"
+            feet, inch = divmod(value / 2.54, 12)
+            value = f"{int(feet)}'{int(inch)}''"
         self.height_label.configure(text=value)
 
 
