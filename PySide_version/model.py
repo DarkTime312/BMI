@@ -49,12 +49,11 @@ class BmiModel:
         self.weight = Weight(weight_kg=weight_in_kg,
                              weight_pd=143,
                              weight_oz=8,
-                             weight_str="65.0kg")
+                             weight_str="65kg")
 
     def set_initial_height(self, height):
         self.height = Height(height_cm=height,
                              height_str='1.70m')
-
 
     def update_weight(self, kg=None, pound=None, ounce=None, weight_str=None):
         if kg:
@@ -128,3 +127,22 @@ class BmiModel:
         # converts the height from centimeters to inches.
         height_in_inches = (self.height.height_cm / 2.54)
         self.bmi_imperial = round((total_weight_in_pound * 703) / (height_in_inches ** 2), 2)
+
+    def convert_weight_unit(self, to='imperial'):
+        """
+        Converts the weight between units.
+        """
+        if to == 'imperial':  # Converting metric to imperial
+            weight_in_kg = self.weight.weight_kg
+            weight_in_decimal_pound = weight_in_kg * 2.205
+
+            # convert the decimal pound to pound + ounce format
+            integer_part, decimal_part = divmod(weight_in_decimal_pound, 1)
+            self.update_weight(pound=int(integer_part),
+                               ounce=int(decimal_part * 16)
+                               )
+        else:
+            # Converting imperial to metric
+            total_weight_in_ounce = self.weight.weight_oz + (self.weight.weight_pd * 16)
+            total_weight_in_kg = round(total_weight_in_ounce / 35.27, 1)
+            self.update_weight(kg=int(total_weight_in_kg))
