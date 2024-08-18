@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>BMIView</class>
+ <widget class="QWidget" name="BMIView">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>400</width>
+    <height>400</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>400</width>
+    <height>400</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resource.qrc">
+    <normaloff>:/assets/empty.ico</normaloff>:/assets/empty.ico</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget#BMIView {
+	background-color: #50BFAB;	
+
+}
+
+/* Unit button*/
+QPushButton#btn_unit {
+font-family: Calibri;
+font-size: 18px;
+font-weight: bold;
+color:#3a9393;
+background-color:#50BFAB;
+ text-align: top right; 
+padding: 0;
+
+}
+
+QPushButton#btn_unit:hover {
+background-color: transparent;
+}
+
+QPushButton#btn_unit:pressed {
+background-color: transparent;
+border: none
+}
+
+/* Result Label*/
+QLabel#lbl_result {
+font-family: Calibri;
+font-size: 150px;
+font-weight: bold;
+color:#F2F2F2;
+}
+
+/* weight and height labels*/
+QLabel#lbl_weight,
+QLabel#lbl_height {
+font-family: Calibri;
+font-size: 26px;
+color:#1F1F1F;
+}
+
+/* weight buttons*/
+QPushButton#btn_big_minus,
+QPushButton#btn_small_minus,
+QPushButton#btn_big_plus,
+QPushButton#btn_small_plus {
+font-family: Calibri;
+font-size: 26px;
+color:#1F1F1F;
+background-color: #e8e8e8;
+border: 2px solid #e8e8e8;
+border-radius: 6px;
+}
+
+QPushButton#btn_big_minus:hover,
+QPushButton#btn_small_minus:hover,
+QPushButton#btn_big_plus:hover,
+QPushButton#btn_small_plus:hover {
+background-color: #d9d9d9;
+}
+
+QPushButton#btn_big_minus:pressed,
+QPushButton#btn_small_minus:pressed,
+QPushButton#btn_big_plus:pressed,
+QPushButton#btn_small_plus:pressed {
+background-color: #e8e8e8;
+}
+/* Frames*/
+
+QFrame#frame,
+QFrame#frame_2 {
+	background-color: #F2F2F2;
+	border: 2px solid #F2F2F2;
+	border-radius: 6px;
+}
+
+
+
+
+</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,4,2,2">
+   <property name="spacing">
+    <number>10</number>
+   </property>
+   <property name="sizeConstraint">
+    <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+   </property>
+   <property name="leftMargin">
+    <number>10</number>
+   </property>
+   <property name="topMargin">
+    <number>10</number>
+   </property>
+   <property name="rightMargin">
+    <number>10</number>
+   </property>
+   <property name="bottomMargin">
+    <number>10</number>
+   </property>
+   <item alignment="Qt::AlignmentFlag::AlignRight">
+    <widget class="QPushButton" name="btn_unit">
+     <property name="minimumSize">
+      <size>
+       <width>55</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>55</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Calibri</family>
+       <pointsize>-1</pointsize>
+       <bold>true</bold>
+       <stylestrategy>PreferAntialias</stylestrategy>
+      </font>
+     </property>
+     <property name="text">
+      <string>metric</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="lbl_result">
+     <property name="font">
+      <font>
+       <family>Calibri</family>
+       <pointsize>-1</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>22.49</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="frame">
+     <property name="frameShape">
+      <enum>QFrame::Shape::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Shadow::Raised</enum>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="btn_big_minus">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>60</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>60</width>
+          <height>60</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Calibri</family>
+          <pointsize>-1</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>-</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_small_minus">
+        <property name="maximumSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Calibri</family>
+          <pointsize>-1</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>-</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="lbl_weight">
+        <property name="font">
+         <font>
+          <family>Calibri</family>
+          <pointsize>-1</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>65.0kg</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_small_plus">
+        <property name="maximumSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Calibri</family>
+          <pointsize>-1</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>+</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_big_plus">
+        <property name="maximumSize">
+         <size>
+          <width>60</width>
+          <height>60</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Calibri</family>
+          <pointsize>-1</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>+</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="frame_2">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="palette">
+      <palette>
+       <active>
+        <colorrole role="Button">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>242</red>
+           <green>242</green>
+           <blue>242</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Base">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>242</red>
+           <green>242</green>
+           <blue>242</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Window">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>242</red>
+           <green>242</green>
+           <blue>242</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </active>
+       <inactive>
+        <colorrole role="Button">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>242</red>
+           <green>242</green>
+           <blue>242</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Base">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>242</red>
+           <green>242</green>
+           <blue>242</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Window">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>242</red>
+           <green>242</green>
+           <blue>242</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </inactive>
+       <disabled>
+        <colorrole role="Button">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>242</red>
+           <green>242</green>
+           <blue>242</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Base">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>242</red>
+           <green>242</green>
+           <blue>242</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Window">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>242</red>
+           <green>242</green>
+           <blue>242</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </disabled>
+      </palette>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Shape::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Shadow::Raised</enum>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <property name="spacing">
+       <number>30</number>
+      </property>
+      <item>
+       <widget class="QSlider" name="slider_height">
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="Accent">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>80</red>
+              <green>191</green>
+              <blue>171</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+          <inactive>
+           <colorrole role="Accent">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>80</red>
+              <green>191</green>
+              <blue>171</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </inactive>
+          <disabled>
+           <colorrole role="Accent">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>80</red>
+              <green>191</green>
+              <blue>171</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </disabled>
+         </palette>
+        </property>
+        <property name="autoFillBackground">
+         <bool>true</bool>
+        </property>
+        <property name="minimum">
+         <number>100</number>
+        </property>
+        <property name="maximum">
+         <number>250</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="lbl_height">
+        <property name="font">
+         <font>
+          <family>Calibri</family>
+          <pointsize>-1</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>1.00ml</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
+ <connections/>
+</ui>
