@@ -51,6 +51,11 @@ class BmiModel:
                              weight_oz=8,
                              weight_str="65.0kg")
 
+    def set_initial_height(self, height):
+        self.height = Height(height_cm=height,
+                             height_str='1.70m')
+
+
     def update_weight(self, kg=None, pound=None, ounce=None, weight_str=None):
         if kg:
             self.weight.weight_kg = kg
@@ -77,37 +82,49 @@ class BmiModel:
         current_weight = self.get_weight()
 
         if big_step:
-            # Decides the operation as addition or subtraction based on increment parameter.
             adjustment = 1 if is_increment else -1
-            # if the unit is metric and the current weight is above zero
-            if current_unit == 'metric' and (weight := current_weight.weight_kg) > 0:
-                # adds or subtracts 1 kg
-                weight_in_kg = round(weight, 1) + adjustment
-                self.update_weight(kg=weight_in_kg)
-            else:  # if the unit is imperial
-                if current_weight.weight_pd > 0:
-                    # adds or subtract 1 pound
-                    weight_in_pound = current_weight.weight_pd + adjustment
-                    self.update_weight(pound=weight_in_pound)
-        else:  # Small step
+        else:
             adjustment = 0.1 if is_increment else -0.1
-            if current_unit == 'metric' and (weight := current_weight.weight_kg) > 0:
-                # adds or subtracts 100 grams
-                weight_in_kg = round(weight, 1) + adjustment
-                self.update_weight(kg=weight_in_kg)
 
-            else:  # imperial
-                if is_increment:
-                    if current_weight.weight_oz == 15:  # in case we're at maximum amount of ounce
-                        self.update_weight(ounce=0,
-                                           pound=current_weight.weight_pd + 1
-                                           )
-                    else:  # otherwise add 1 to ounce
-                        self.update_weight(ounce=(current_weight.weight_oz + 1))
-                else:  # decrement
-                    if current_weight.weight_oz == 0:  # in case we're at minimum ounce
-                        self.update_weight(ounce=15,
-                                           pound=current_weight.weight_pd - 1
-                                           )
-                    else:  # otherwise subtract one from ounce
-                        self.update_weight(ounce=current_weight.weight_oz - 1)
+        if current_unit == 'metric' and (weight := current_weight.weight_kg) > 0:
+            weight_in_kg = round(weight, 1) + adjustment
+            self.update_weight(kg=weight_in_kg)
+        elif current_unit == 'imperial' and big_step and current_weight.weight_pd > 0:
+            weight_in_pound = current_weight.weight_pd + adjustment
+            self.update_weight(pound=weight_in_pound)
+
+        elif current_unit == 'imperial' and not big_step and is_increment:
+            if current_weight.weight_oz == 15:  # in case we're at maximum amount of ounce
+                self.update_weight(ounce=0,
+                                   pound=current_weight.weight_pd + 1
+                                   )
+            else:  # otherwise add 1 to ounce
+                self.update_weight(ounce=(current_weight.weight_oz + 1))
+
+        elif current_unit == 'imperial' and not big_step and not is_increment:
+            if current_weight.weight_oz == 0:  # in case we're at minimum ounce
+                self.update_weight(ounce=15,
+                                   pound=current_weight.weight_pd - 1
+                                   )
+            else:  # otherwise subtract one from ounce
+                self.update_weight(ounce=current_weight.weight_oz - 1)
+
+    def calculate_bmi(self):
+        """
+        Calculate the BMI based on the current unit system.
+
+        Returns:
+            float: The calculated BMI rounded to two decimal places.
+        """
+        # gets the weight as kg
+        weight_kg = self.weight.weight_kg
+        # gets the height in centimeter and convert it to meter
+        height_meter = self.height.height_cm / 100
+        self.bmi_metric = round(weight_kg / (height_meter ** 2), 2)  # rounded to 2 decimals
+
+        # if unit is imperial
+        # gets the cumulated weight as pound
+        total_weight_in_pound = self.weight.weight_pd + (self.weight.weight_oz / 16)
+        # converts the height from centimeters to inches.
+        height_in_inches = (self.height.height_cm / 2.54)
+        self.bmi_imperial = round((total_weight_in_pound * 703) / (height_in_inches ** 2), 2)

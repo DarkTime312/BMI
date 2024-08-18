@@ -20,6 +20,7 @@ class BmiController:
         self.model.set_unit(self.default_unit)
         self.view.update_unit_view(self.default_unit)
         self.model.set_initial_weight(65)
+        self.model.set_initial_height(170)
 
     def connect_signals_to_slots(self):
         self.view.ui.btn_unit.clicked.connect(self.change_unit)
@@ -45,8 +46,18 @@ class BmiController:
     def update_height(self, height: int):
         self.model.set_height(height)
         self.view.update_height_text(self.model.get_height().height_str)
+        self.calculate_bmi()
 
     def adjust_weight(self, is_increment: bool, big_step: bool):
         self.model.adjust_weight(is_increment=is_increment,
                                  big_step=big_step)
         self.view.update_weight_label(self.model.get_weight().weight_str)
+        self.calculate_bmi()
+
+    def calculate_bmi(self):
+        self.model.calculate_bmi()
+
+        if self.model.get_unit() == 'metric':
+            self.view.update_bmi_text(str(self.model.bmi_metric))
+        else:
+            self.view.update_bmi_text(str(self.model.bmi_imperial))

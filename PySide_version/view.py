@@ -33,3 +33,7 @@ class BmiView(QWidget):
 
     def update_weight_label(self, weight: str):
         self.ui.lbl_weight.setText(weight)
+
+    def update_bmi_text(self, bmi: str):
+        """Gets the BMI and updates the text inside the label."""
+        self.ui.lbl_result.setText(bmi)

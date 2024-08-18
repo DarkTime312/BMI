@@ -8,8 +8,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PySide_version/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/PySide_version/controller.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PySide_version/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/PySide_version/model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PySide_version/ui.ui" beforeDir="false" afterPath="$PROJECT_DIR$/PySide_version/ui.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PySide_version/ui_ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/PySide_version/ui_ui.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PySide_version/view.py" beforeDir="false" afterPath="$PROJECT_DIR$/PySide_version/view.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -66,7 +64,7 @@
       <recent name="C:\Users\Mohammad\Documents\Mnitors\My_script\BMI" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.qt_main">
+  <component name="RunManager" selected="Python.main">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="BMI" />
       <option name="ENV_FILES" value="" />
@@ -135,8 +133,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.qt_main" />
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.qt_main" />
         <item itemvalue="Python.view" />
       </list>
     </recent_temporary>
@@ -253,7 +251,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723947651504</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="added the weight adjustments">
+      <option name="closed" value="true" />
+      <created>1723960076204</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1723960076204</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -267,6 +273,7 @@
     <MESSAGE value="v1.0" />
     <MESSAGE value="v1.0.1" />
     <MESSAGE value="qt version started" />
-    <option name="LAST_COMMIT_MESSAGE" value="qt version started" />
+    <MESSAGE value="added the weight adjustments" />
+    <option name="LAST_COMMIT_MESSAGE" value="added the weight adjustments" />
   </component>
 </project>
