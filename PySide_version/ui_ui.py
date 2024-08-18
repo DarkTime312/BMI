@@ -119,8 +119,8 @@ class Ui_BMIView(object):
         self.verticalLayout_2.setContentsMargins(10, 10, 10, 10)
         self.btn_unit = QPushButton(BMIView)
         self.btn_unit.setObjectName(u"btn_unit")
-        self.btn_unit.setMinimumSize(QSize(55, 0))
-        self.btn_unit.setMaximumSize(QSize(55, 16777215))
+        self.btn_unit.setMinimumSize(QSize(65, 0))
+        self.btn_unit.setMaximumSize(QSize(65, 16777215))
         font = QFont()
         font.setFamilies([u"Calibri"])
         font.setBold(True)
@@ -210,7 +210,7 @@ class Ui_BMIView(object):
         self.frame_2.setFrameShape(QFrame.Shape.StyledPanel)
         self.frame_2.setFrameShadow(QFrame.Shadow.Raised)
         self.horizontalLayout_2 = QHBoxLayout(self.frame_2)
-        self.horizontalLayout_2.setSpacing(30)
+        self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.slider_height = QSlider(self.frame_2)
         self.slider_height.setObjectName(u"slider_height")
@@ -230,7 +230,9 @@ class Ui_BMIView(object):
 
         self.lbl_height = QLabel(self.frame_2)
         self.lbl_height.setObjectName(u"lbl_height")
+        self.lbl_height.setMinimumSize(QSize(120, 0))
         self.lbl_height.setFont(font2)
+        self.lbl_height.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
 
         self.horizontalLayout_2.addWidget(self.lbl_height)
 
@@ -249,7 +251,7 @@ class Ui_BMIView(object):
 
     def retranslateUi(self, BMIView):
         BMIView.setWindowTitle(QCoreApplication.translate("BMIView", u"Form", None))
-        self.btn_unit.setText(QCoreApplication.translate("BMIView", u"metric", None))
+        self.btn_unit.setText(QCoreApplication.translate("BMIView", u"imperial", None))
         self.lbl_result.setText(QCoreApplication.translate("BMIView", u"22.49", None))
         self.btn_big_minus.setText(QCoreApplication.translate("BMIView", u"-", None))
         self.btn_small_minus.setText(QCoreApplication.translate("BMIView", u"-", None))

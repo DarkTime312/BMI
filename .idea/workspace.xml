@@ -4,20 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="01a2f26e-7dc0-4bd4-8b47-eb1b84019154" name="Changes" comment="v1.0.1">
-      <change afterPath="$PROJECT_DIR$/PySide_version/assets/Slider_pallete.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PySide_version/assets/empty.ico" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PySide_version/controller.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PySide_version/model.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PySide_version/qt_main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PySide_version/resource.qrc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PySide_version/resource_rc.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PySide_version/ui.ui" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PySide_version/ui_ui.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PySide_version/view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/BMI.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/BMI.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="01a2f26e-7dc0-4bd4-8b47-eb1b84019154" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PySide_version/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/PySide_version/controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PySide_version/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/PySide_version/model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PySide_version/ui.ui" beforeDir="false" afterPath="$PROJECT_DIR$/PySide_version/ui.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PySide_version/ui_ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/PySide_version/ui_ui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PySide_version/view.py" beforeDir="false" afterPath="$PROJECT_DIR$/PySide_version/view.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -252,7 +245,15 @@
       <option name="project" value="LOCAL" />
       <updated>1719298663648</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="qt version started">
+      <option name="closed" value="true" />
+      <created>1723947651504</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1723947651504</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -265,6 +266,7 @@
     <MESSAGE value="v0.9" />
     <MESSAGE value="v1.0" />
     <MESSAGE value="v1.0.1" />
-    <option name="LAST_COMMIT_MESSAGE" value="v1.0.1" />
+    <MESSAGE value="qt version started" />
+    <option name="LAST_COMMIT_MESSAGE" value="qt version started" />
   </component>
 </project>

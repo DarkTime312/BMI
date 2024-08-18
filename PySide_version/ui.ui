@@ -135,13 +135,13 @@ QFrame#frame_2 {
     <widget class="QPushButton" name="btn_unit">
      <property name="minimumSize">
       <size>
-       <width>55</width>
+       <width>65</width>
        <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>55</width>
+       <width>65</width>
        <height>16777215</height>
       </size>
      </property>
@@ -154,7 +154,7 @@ QFrame#frame_2 {
       </font>
      </property>
      <property name="text">
-      <string>metric</string>
+      <string>imperial</string>
      </property>
      <property name="flat">
       <bool>true</bool>
@@ -393,9 +393,9 @@ QFrame#frame_2 {
      <property name="frameShadow">
       <enum>QFrame::Shadow::Raised</enum>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0">
       <property name="spacing">
-       <number>30</number>
+       <number>0</number>
       </property>
       <item>
        <widget class="QSlider" name="slider_height">
@@ -452,6 +452,12 @@ QFrame#frame_2 {
       </item>
       <item>
        <widget class="QLabel" name="lbl_height">
+        <property name="minimumSize">
+         <size>
+          <width>120</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <family>Calibri</family>
@@ -460,6 +466,9 @@ QFrame#frame_2 {
         </property>
         <property name="text">
          <string>1.00ml</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
        </widget>
       </item>
