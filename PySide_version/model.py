@@ -61,13 +61,13 @@ class BmiModel:
                              height_str='1.70m')
 
     def update_weight(self, kg=None, pound=None, ounce=None, weight_str=None):
-        if kg:
+        if kg is not None:
             self.weight.weight_kg = kg
-        if pound:
+        if pound is not None:
             self.weight.weight_pd = pound
-        if ounce:
+        if ounce is not None:
             self.weight.weight_oz = ounce
-        if weight_str:
+        if weight_str is not None:
             self.weight.weight_str = weight_str
 
         if self.get_unit() == 'metric':

@@ -6,9 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="01a2f26e-7dc0-4bd4-8b47-eb1b84019154" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PySide_version/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/PySide_version/controller.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PySide_version/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/PySide_version/model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PySide_version/view.py" beforeDir="false" afterPath="$PROJECT_DIR$/PySide_version/view.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,7 +62,7 @@
       <recent name="C:\Users\Mohammad\Documents\Mnitors\My_script\BMI" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.qt_main">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="BMI" />
       <option name="ENV_FILES" value="" />
@@ -133,8 +131,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main" />
         <item itemvalue="Python.qt_main" />
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.view" />
       </list>
     </recent_temporary>
@@ -275,7 +273,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723965287610</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="v0.9">
+      <option name="closed" value="true" />
+      <created>1723967492882</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1723967492882</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -284,13 +290,13 @@
     <MESSAGE value="v0.5" />
     <MESSAGE value="v0.6" />
     <MESSAGE value="v0.7" />
-    <MESSAGE value="v0.9" />
     <MESSAGE value="v1.0" />
     <MESSAGE value="v1.0.1" />
     <MESSAGE value="qt version started" />
     <MESSAGE value="added the weight adjustments" />
     <MESSAGE value="added the height adjustments" />
     <MESSAGE value="v0.8" />
-    <option name="LAST_COMMIT_MESSAGE" value="v0.8" />
+    <MESSAGE value="v0.9" />
+    <option name="LAST_COMMIT_MESSAGE" value="v0.9" />
   </component>
 </project>
