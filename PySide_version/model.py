@@ -24,8 +24,13 @@ class BmiModel:
         new_unit = 'imperial' if current_unit == 'metric' else 'metric'
         self.set_unit(new_unit)
 
-    def set_height(self, height: int):
+        # Runs the unit conversion logic based on new unit
+        if new_unit == 'imperial':
+            self.convert_weight_unit(to='imperial')
+        else:  # if switched to metric
+            self.convert_weight_unit(to='metric')
 
+    def set_height(self, height: int):
         current_unit: str = self.get_unit()
         # if value is None:
         #     value = self.slider_var.get()
@@ -146,3 +151,5 @@ class BmiModel:
             total_weight_in_ounce = self.weight.weight_oz + (self.weight.weight_pd * 16)
             total_weight_in_kg = round(total_weight_in_ounce / 35.27, 1)
             self.update_weight(kg=int(total_weight_in_kg))
+
+        self.update_weight()

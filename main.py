@@ -1,3 +1,5 @@
+from hPyT import title_bar_color
+
 from settings import *
 import customtkinter as ctk
 
@@ -370,4 +372,6 @@ class HeightFrame(ctk.CTkFrame):
 
 # Running the app
 app = BmiApp()
+title_bar_color.set(app, '#50BFAB')  # sets the titlebar text color
+
 app.mainloop()

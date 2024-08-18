@@ -1,5 +1,3 @@
-from typing import Literal
-
 from PySide6.QtWidgets import QWidget
 from hPyT import *
 
@@ -19,11 +17,14 @@ class BmiView(QWidget):
     def set_titlebar_color(self):
         title_bar_color.set(self, '#50BFAB')  # sets the titlebar color to white
 
-    def update_unit_view(self, unit):
+    def update_unit_view(self, unit: str):
         self.ui.btn_unit.setText(unit)
 
     def get_unit(self) -> str:
         return self.ui.btn_unit.text()
+
+    def get_height(self) -> int:
+        return self.ui.slider_height.value()
 
     def update_height_text(self, height: str):
         """
